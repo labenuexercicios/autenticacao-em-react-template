@@ -1,6 +1,6 @@
 # Template prática guiada Autenticação no React:
 
-Documentação Postman https://documenter.getpostman.com/view/9731983/U16eu7nT#intro
+Documentação Postman https://documenter.getpostman.com/view/24422099/2s93Xu1QR9
 
 **Durante a prática guiada de hoje usaremos o mesmo template da aula de React e formulários.
 **
