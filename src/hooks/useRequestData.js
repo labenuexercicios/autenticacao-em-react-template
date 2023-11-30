@@ -10,7 +10,13 @@ export default function useRequestData(estadoInicial, path) {
     const [erro, setErro] = useState('')
 
     const receberDados = () =>{
-        axios.get(`${BASE_URL}${path}`)
+        const token = localStorage.getItem("token")
+
+        axios.get(`${BASE_URL}${path}`,{
+            headers:{
+                Authorization:token 
+            }
+        })
         .then((resposta) => {
             setDados(resposta.data)
         })

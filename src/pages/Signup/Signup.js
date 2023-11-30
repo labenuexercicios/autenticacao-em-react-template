@@ -1,11 +1,16 @@
 import React from 'react'
 import useForms from '../../hooks/useForms'
 import { ContainerForm, ContainerSignup, Input } from './styled'
+import axios from 'axios'
+import { BASE_URL } from '../../constants/BASE_URL'
+import { irParaFeed } from '../../routes/coordinator'
+import { useNavigate } from 'react-router-dom'
 
 export default function Signup() {
-    const { form, onChange } = useForms({ email: "", senha: "", nomeUsuario: "", confirmaSenha: "" })
+    const navigate = useNavigate()
+    const {form, onChange, limparCampos} = useForms({ email: "", senha: "", nomeUsuario: "", confirmaSenha: "" })
 
-    const enviarCadastro = (e) => {
+    const enviarCadastro = async (e) => {
         e.preventDefault()
         //* EXTRA: validando a senha - ter certeza que o usuário sabe qual senha cadastrou
         // não é necessário caso use o pattern para a mesma funcionalidade
@@ -15,6 +20,20 @@ export default function Signup() {
                 email: form.email,
                 password: form.senha
             }
+
+            try {
+                const response = await axios.post(`${BASE_URL}/users/signup`,dadosUsuario )
+                localStorage.setItem("token", response.data.token)
+                limparCampos()
+                irParaFeed(navigate)
+                
+            } catch (error) {
+                console.log(error);
+            }
+
+
+
+
             console.log(dadosUsuario)
         } else {
             alert("Digite a mesma senha nos campos 'senha' e 'confirmação de senha'")

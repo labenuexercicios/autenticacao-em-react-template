@@ -3,16 +3,29 @@ import { useNavigate } from 'react-router-dom'
 import useForms from '../../hooks/useForms'
 
 import { ContainerForm, ContainerLogin, Input } from './styled'
-import { irParaCadastro } from '../../routes/coordinator'
+import { irParaCadastro, irParaFeed } from '../../routes/coordinator'
+import axios from 'axios'
+import { BASE_URL } from '../../constants/BASE_URL'
 
 export default function Login() {
   const navigate = useNavigate()
 
-  const { form, onChange } = useForms({ email: "", password: "" })
+  const {form, onChange, limparCampos}= useForms({ email: "", password: "" })
 
-  const enviaLogin = (e) => {
+  const enviaLogin = async (e) => {
     e.preventDefault()
     console.log(form)
+
+    try {
+      const response = await axios.post(`${BASE_URL}/users/login`, form)
+      localStorage.setItem("token", response.data.token)
+      limparCampos()
+      irParaFeed(navigate)
+
+      
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
